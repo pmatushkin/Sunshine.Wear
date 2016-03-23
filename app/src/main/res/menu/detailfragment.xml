@@ -18,6 +18,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/action_share"
         android:title="@string/action_share"
-        android:icon="@drawable/abc_ic_menu_share_mtrl_alpha"
+        android:icon="@drawable/ic_share"
         app:showAsAction="always"/>
 </menu>

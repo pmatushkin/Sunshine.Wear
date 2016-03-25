@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="background">#000000</color>
+    <color name="date">#ffffff</color>
+    <color name="date_ambient">#ffffff</color>
+    <color name="divider">#80ffffff</color>
+    <color name="divider_ambient">#000000</color>
+    <color name="background">#1ca7f3</color>
+    <color name="background_ambient">#000000</color>
     <color name="digital_text">#ffffff</color>
 </resources>

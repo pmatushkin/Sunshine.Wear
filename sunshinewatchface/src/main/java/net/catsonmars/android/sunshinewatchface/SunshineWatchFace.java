@@ -29,6 +29,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.support.wearable.watchface.CanvasWatchFaceService;
 import android.support.wearable.watchface.WatchFaceStyle;
 import android.text.format.Time;
@@ -44,8 +45,11 @@ import java.util.concurrent.TimeUnit;
  * low-bit ambient mode, the text is drawn without anti-aliasing in ambient mode.
  */
 public class SunshineWatchFace extends CanvasWatchFaceService {
+    private static final Typeface BASE_TYPEFACE = Typeface.SANS_SERIF;
     private static final Typeface NORMAL_TYPEFACE =
-            Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL);
+            Typeface.create(BASE_TYPEFACE, Typeface.NORMAL);
+    private static final Typeface BOLD_TYPEFACE =
+            Typeface.create(BASE_TYPEFACE, Typeface.BOLD);
 
     /**
      * Update rate in milliseconds for interactive mode. We update once a second since seconds are
@@ -84,12 +88,34 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
     }
 
     private class Engine extends CanvasWatchFaceService.Engine {
+
         final Handler mUpdateTimeHandler = new EngineHandler(this);
+
         boolean mRegisteredTimeZoneReceiver = false;
+
+        Paint mDatePaint;
+        Paint mDateAmbientPaint;
+        Paint mDividerPaint;
+        Paint mDividerAmbientPaint;
         Paint mBackgroundPaint;
+        Paint mBackgroundAmbientPaint;
         Paint mTextPaint;
+        Paint mTextBoldPaint;
+
+        float mXOffset;
+        float mYOffset;
+        float mLineHeight;
+
+//        float mXOffsetHours;
+//        float mYOffsetHours;
+//        float mXOffsetMinutes;
+//        float mYOffsetMinutes;
+
         boolean mAmbient;
+        boolean mLowBitAmbient;
+
         Time mTime;
+
         final BroadcastReceiver mTimeZoneReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -97,14 +123,10 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
                 mTime.setToNow();
             }
         };
-        float mXOffset;
-        float mYOffset;
-
         /**
          * Whether the display supports fewer bits for each color in ambient mode. When true, we
          * disable anti-aliasing in ambient mode.
          */
-        boolean mLowBitAmbient;
 
         @Override
         public void onCreate(SurfaceHolder holder) {
@@ -116,13 +138,31 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
                     .setShowSystemUiTime(false)
                     .build());
             Resources resources = SunshineWatchFace.this.getResources();
-            mYOffset = resources.getDimension(R.dimen.digital_y_offset);
 
+            // initialize date paints
+            mDatePaint = createTextPaint(ContextCompat.getColor(getBaseContext(), R.color.date), resources.getDimension(R.dimen.text_size_date), NORMAL_TYPEFACE);
+            mDateAmbientPaint = createTextPaint(ContextCompat.getColor(getBaseContext(), R.color.date_ambient), resources.getDimension(R.dimen.text_size_date), NORMAL_TYPEFACE);
+
+            // initialize divider paints
+            mDividerPaint = new Paint();
+            mDividerPaint.setColor(ContextCompat.getColor(getBaseContext(), R.color.divider));
+
+            mDividerAmbientPaint = new Paint();
+            mDividerAmbientPaint.setColor(ContextCompat.getColor(getBaseContext(), R.color.divider_ambient));
+
+            // initialize background paints
             mBackgroundPaint = new Paint();
-            mBackgroundPaint.setColor(resources.getColor(R.color.background));
+            mBackgroundPaint.setColor(ContextCompat.getColor(getBaseContext(), R.color.background));
 
-            mTextPaint = new Paint();
-            mTextPaint = createTextPaint(resources.getColor(R.color.digital_text));
+            mBackgroundAmbientPaint = new Paint();
+            mBackgroundAmbientPaint.setColor(ContextCompat.getColor(getBaseContext(), R.color.background_ambient));
+
+            mTextPaint = createTextPaint(ContextCompat.getColor(getBaseContext(), R.color.digital_text), NORMAL_TYPEFACE);
+            mTextBoldPaint = createTextPaint(ContextCompat.getColor(getBaseContext(), R.color.digital_text), BOLD_TYPEFACE);
+
+            mYOffset = resources.getDimension(R.dimen.line_height);
+            mYOffset = resources.getDimension(R.dimen.digital_y_offset);
+            mLineHeight = resources.getDimension(R.dimen.line_height);
 
             mTime = new Time();
         }
@@ -133,11 +173,24 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
             super.onDestroy();
         }
 
-        private Paint createTextPaint(int textColor) {
+        private Paint createTextPaint(int textColor, Typeface typeface) {
             Paint paint = new Paint();
+
             paint.setColor(textColor);
-            paint.setTypeface(NORMAL_TYPEFACE);
+            paint.setTypeface(typeface);
             paint.setAntiAlias(true);
+
+            return paint;
+        }
+
+        private Paint createTextPaint(int textColor, float textSize, Typeface typeface) {
+            Paint paint = new Paint();
+
+            paint.setColor(textColor);
+            paint.setTypeface(typeface);
+            paint.setAntiAlias(true);
+            paint.setTextSize(textSize);
+
             return paint;
         }
 
@@ -229,12 +282,26 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
                 canvas.drawRect(0, 0, bounds.width(), bounds.height(), mBackgroundPaint);
             }
 
-            // Draw H:MM in ambient mode or H:MM:SS in interactive mode.
             mTime.setToNow();
-            String text = mAmbient
-                    ? String.format("%d:%02d", mTime.hour, mTime.minute)
-                    : String.format("%d:%02d:%02d", mTime.hour, mTime.minute, mTime.second);
-            canvas.drawText(text, mXOffset, mYOffset, mTextPaint);
+
+//            // Draw H:MM in ambient mode or H:MM:SS in interactive mode.
+//            mTime.setToNow();
+//            String text = mAmbient
+//                    ? String.format("%d:%02d", mTime.hour, mTime.minute)
+//                    : String.format("%d:%02d:%02d", mTime.hour, mTime.minute, mTime.second);
+//            canvas.drawText(text, mXOffset, mYOffset, mTextPaint);
+
+//            // draw a date string
+            String textDate = mTime.format("%a %b %d %Y").toUpperCase();
+            Paint datePaint = mAmbient ? mDateAmbientPaint : mDatePaint;
+            Rect dateBounds = new Rect();
+            datePaint.getTextBounds(textDate, 0, textDate.length(), dateBounds);
+            canvas.drawText(textDate, (bounds.width() - dateBounds.width()) / 2, bounds.height() / 2 - 1 - dateBounds.height() - mLineHeight, datePaint);
+
+            // draw a horizontal divider
+            if (!mAmbient) {
+                canvas.drawRect((bounds.width() * 3) / 8, bounds.height() / 2 - 1, (bounds.width() * 5) / 8, bounds.height() / 2 + 1, mDividerPaint);
+            }
         }
 
         /**

@@ -4,5 +4,6 @@
 
     <string name="time_separator" translatable="false">|:|</string>
 
+    <string name="format_watchface_date" translatable="false" formatted="false">%a, %b %d %Y</string>
     <string name="format_temperature" translatable="false"><xliff:g id="temp">%1.0f</xliff:g>\u00B0</string>
 </resources>

@@ -93,6 +93,8 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
 
         String mTimeSeparator;
 
+        String mTemperatureFormat;
+
         Paint mHourPaint;
         Paint mMinutePaint;
         Paint mDatePaint;
@@ -101,6 +103,8 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
 //        Paint mDividerAmbientPaint;
         Paint mBackgroundPaint;
         Paint mBackgroundAmbientPaint;
+        Paint mHighTempPaint;
+        Paint mLowTempPaint;
         Paint mTextPaint;
         Paint mTextBoldPaint;
 
@@ -108,6 +112,9 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
         float mYOffset;
         float mLineSpace;
         float mCharSpace;
+
+        float mHighTemperature = 25;
+        float mLowTemperature = 16;
 
 //        float mXOffsetHours;
 //        float mYOffsetHours;
@@ -165,6 +172,13 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
 
             mBackgroundAmbientPaint = new Paint();
             mBackgroundAmbientPaint.setColor(ContextCompat.getColor(getBaseContext(), R.color.background_ambient));
+
+            // initialize temperature paints
+            mHighTempPaint = createTextPaint(ContextCompat.getColor(getBaseContext(), R.color.text), resources.getDimension(R.dimen.text_size_temperature), NORMAL_TYPEFACE);
+            mLowTempPaint = createTextPaint(ContextCompat.getColor(getBaseContext(), R.color.text_semitransparent), resources.getDimension(R.dimen.text_size_temperature), NORMAL_TYPEFACE);
+
+            // initialize format strings
+            mTemperatureFormat = resources.getString(R.string.format_temperature);
 
             mTextPaint = createTextPaint(ContextCompat.getColor(getBaseContext(), R.color.digital_text), NORMAL_TYPEFACE);
             mTextBoldPaint = createTextPaint(ContextCompat.getColor(getBaseContext(), R.color.digital_text), BOLD_TYPEFACE);
@@ -351,6 +365,38 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
 
             // draw a horizontal divider
             canvas.drawRect((bounds.width() * 3) / 8, bounds.height() / 2 - 1, (bounds.width() * 5) / 8, bounds.height() / 2 + 1, mDividerPaint);
+
+            // draw a horizontal divider
+            canvas.drawRect(
+                    (bounds.width() * 3) / 8,
+                    bounds.height() / 2 - 1,
+                    (bounds.width() * 5) / 8,
+                    bounds.height() / 2 + 1,
+                    mDividerPaint);
+
+            // draw an icon
+
+            // draw a high temperature
+            String highTempText = String.format(mTemperatureFormat, mHighTemperature);
+            Paint highTempPaint = mHighTempPaint;
+            Rect highTempBounds = new Rect();
+            highTempPaint.getTextBounds(highTempText, 0, highTempText.length(), highTempBounds);
+            canvas.drawText(
+                    highTempText,
+                    (bounds.width() * 2 / 5 + (bounds.width() / 5 - highTempBounds.width()) / 2),
+                    bounds.height() / 2 + 1 + mLineSpace,
+                    highTempPaint);
+
+            // draw a low temperature
+            String lowTempText = String.format(mTemperatureFormat, mLowTemperature);
+            Paint lowTempPaint = mLowTempPaint;
+            Rect lowTempBounds = new Rect();
+            lowTempPaint.getTextBounds(lowTempText, 0, lowTempText.length(), lowTempBounds);
+            canvas.drawText(
+                    lowTempText,
+                    (bounds.width() * 3 / 5 + (bounds.width() / 5 - lowTempBounds.width()) / 2),
+                    bounds.height() / 2 + 1 + mLineSpace,
+                    lowTempPaint);
         }
 
         /**

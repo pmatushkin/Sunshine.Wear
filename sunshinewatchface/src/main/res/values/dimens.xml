@@ -16,5 +16,6 @@
 
     <dimen name="text_size_time">45dp</dimen>
     <dimen name="text_size_date">15dp</dimen>
+    <dimen name="text_size_temperature">30dp</dimen>
     <!--<dimen name="text_size_date_round">15dp</dimen>-->
 </resources>

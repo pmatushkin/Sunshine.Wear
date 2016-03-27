@@ -2,6 +2,9 @@
     <string name="app_name">Sunshine Watch Face</string>
     <string name="my_digital_name">Sunshine</string>
 
+    <!--see comments in SunshineWatchService.java-->
+    <!--for some reason I cannot keep leading and trailing spaces added to the separator string in the strings.xml file;-->
+    <!--so I'm adding a magic character to replace it with a space character right before displaying the separator-->
     <string name="time_separator" translatable="false">|:|</string>
 
     <string name="format_watchface_date" translatable="false" formatted="false">%a, %b %d %Y</string>

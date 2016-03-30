@@ -130,6 +130,7 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
         String mTemperatureFormat;
         String mDateFormat;
         String mHourFormat;
+        String mMinuteFormat;
 
         Paint mHourPaint;
         Paint mMinutePaint;
@@ -217,6 +218,7 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
             mTemperatureFormat = resources.getString(R.string.format_temperature);
             mDateFormat = resources.getString(R.string.format_watchface_date);
             mHourFormat = resources.getString(R.string.format_hours);
+            mMinuteFormat = resources.getString(R.string.format_minutes);
 
             mTextPaint = createTextPaint(ContextCompat.getColor(getBaseContext(), R.color.digital_text), NORMAL_TYPEFACE);
             mTextBoldPaint = createTextPaint(ContextCompat.getColor(getBaseContext(), R.color.digital_text), BOLD_TYPEFACE);
@@ -366,7 +368,7 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
             separatorPaint.getTextBounds(mTimeSeparator, 0, mTimeSeparator.length(), separatorBounds);
 
             // draw minutes
-            String minuteText = mTime.format("%M");
+            String minuteText = mTime.format(mMinuteFormat);
             Paint minutePaint = mMinutePaint;
             Rect minuteBounds = new Rect();
             minutePaint.getTextBounds(minuteText, 0, minuteText.length(), minuteBounds);

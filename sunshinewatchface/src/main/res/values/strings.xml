@@ -10,4 +10,5 @@
     <string name="format_watchface_date" translatable="false" formatted="false">%a, %b %d %Y</string>
     <string name="format_temperature" translatable="false"><xliff:g id="temp">%1.0f</xliff:g>\u00B0</string>
     <string name="format_hours" translatable="false" formatted="false">%H</string>
+    <string name="format_minutes" translatable="false" formatted="false">%M</string>
 </resources>

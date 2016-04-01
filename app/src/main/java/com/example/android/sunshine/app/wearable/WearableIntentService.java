@@ -19,7 +19,6 @@ import com.google.android.gms.wearable.Wearable;
 
 public class WearableIntentService extends IntentService
     implements GoogleApiClient.ConnectionCallbacks
-//        , GoogleApiClient.OnConnectionFailedListener
 {
 
     private static final String TAG = "WearableIntentService";
@@ -82,27 +81,20 @@ public class WearableIntentService extends IntentService
 
         // Extract the weather data from the Cursor
         mWeatherId = data.getInt(INDEX_WEATHER_ID);
-//        mWeatherArtResourceId = Utility.getArtResourceForWeatherCondition(weatherId);
-//        String description = data.getString(INDEX_SHORT_DESC);
         mMaxTemp = data.getDouble(INDEX_MAX_TEMP);
         mMinTemp = data.getDouble(INDEX_MIN_TEMP);
-//        String formattedMaxTemperature = Utility.formatTemperature(this, maxTemp);
-//        String formattedMinTemperature = Utility.formatTemperature(this, minTemp);
         data.close();
 
         // create or connect a Google API client
-        if (mGoogleApiClient == null) {
+        if (null == mGoogleApiClient) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addApi(Wearable.API)
                     .addConnectionCallbacks(this)
-                            //.addOnConnectionFailedListener(this)
                     .build();
         }
         if (!mGoogleApiClient.isConnected()) {
             mGoogleApiClient.connect();
         }
-
-//        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override
@@ -135,9 +127,4 @@ public class WearableIntentService extends IntentService
     public void onConnectionSuspended(int i) {
 
     }
-
-//    @Override
-//    public void onConnectionFailed(ConnectionResult connectionResult) {
-//
-//    }
 }

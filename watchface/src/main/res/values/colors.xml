@@ -2,12 +2,6 @@
 <resources>
     <color name="text">#ffffff</color>
     <color name="text_semitransparent">#80ffffff</color>
-
-    <!--<color name="date">#ffffff</color>-->
-    <!--<color name="date_ambient">#80ffffff</color>-->
-    <!--<color name="divider">#80ffffff</color>-->
-    <!--<color name="divider_ambient">#000000</color>-->
     <color name="background">#1ca7f3</color>
     <color name="background_ambient">#000000</color>
-    <color name="digital_text">#ffffff</color>
 </resources>

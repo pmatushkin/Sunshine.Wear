@@ -182,7 +182,21 @@
         </service>
         <service
             android:name=".gcm.RegistrationIntentService"
-            android:exported="false"></service>
+            android:exported="false" />
+
+        <!-- Wearable -->
+        <service
+            android:name=".wearable.WearableIntentService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <receiver
+            android:name=".wearable.WearableProvider"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="com.example.android.sunshine.app.ACTION_DATA_UPDATED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

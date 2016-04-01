@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="net.catsonmars.android.sunshinewatchface">
+    package="com.example.android.sunshine.app">
 
     <uses-feature android:name="android.hardware.type.watch" />
 
@@ -14,7 +14,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@android:style/Theme.DeviceDefault">
-
         <service
             android:name=".SunshineWatchFace"
             android:label="@string/my_digital_name"
@@ -24,10 +23,10 @@
                 android:resource="@xml/watch_face" />
             <meta-data
                 android:name="com.google.android.wearable.watchface.preview"
-                android:resource="@drawable/square" />
+                android:resource="@drawable/preview_digital" />
             <meta-data
                 android:name="com.google.android.wearable.watchface.preview_circular"
-                android:resource="@drawable/round" />
+                android:resource="@drawable/preview_digital_circular" />
 
             <intent-filter>
                 <action android:name="android.service.wallpaper.WallpaperService" />

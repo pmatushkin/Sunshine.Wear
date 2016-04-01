@@ -6,7 +6,7 @@ android {
     buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId "net.catsonmars.android.sunshinewatchface"
+        applicationId "com.example.android.sunshine.app"
         minSdkVersion 21
         targetSdkVersion 23
         versionCode 1
@@ -22,6 +22,6 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.google.android.support:wearable:1.3.0'
+    compile 'com.google.android.support:wearable:1.4.0'
     compile 'com.google.android.gms:play-services-wearable:8.4.0'
 }

@@ -28,27 +28,6 @@ public class MyWearableListenerService extends WearableListenerService
         super.onDestroy();
     }
 
-//    @Override
-//    public void onDataChanged(DataEventBuffer dataEventBuffer) {
-//        Log.d(TAG, "onDataChanged");
-//
-//        for (DataEvent event : dataEventBuffer) {
-//            if (event.getType() == DataEvent.TYPE_CHANGED) {
-//                // DataItem changed
-//                DataItem item = event.getDataItem();
-//                String path = item.getUri().getPath();
-//                Log.d(TAG, "path: " + path);
-//
-//                if (path.equals(REQ_WEATHER_PATH)) {
-//                    // start the service sending the updated weather data to the wearable
-//                    Context context = this.getApplicationContext();
-//                    context.startService(new Intent(context, WearableIntentService.class));
-//                }
-//            }
-//        }
-//    }
-
-
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
         Log.d(TAG, "onMessageReceived: " + messageEvent);
@@ -56,9 +35,9 @@ public class MyWearableListenerService extends WearableListenerService
         String path = messageEvent.getPath();
         Log.d(TAG, "message path: " + path);
 
-        // Check to see if the message is to start an activity
+        // Check to see if the message is a request for the updated weather conditions
         if (path.equals(REQ_WEATHER_PATH)) {
-            // start the service sending the updated weather data to the wearable
+            // start the service sending the updated weather condition to the wearable
             Context context = this.getApplicationContext();
             context.startService(new Intent(context, WearableIntentService.class));
         }

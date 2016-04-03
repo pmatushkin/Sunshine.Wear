@@ -49,8 +49,6 @@ import com.google.android.gms.wearable.DataMapItem;
 import com.google.android.gms.wearable.MessageApi;
 import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.NodeApi;
-import com.google.android.gms.wearable.PutDataMapRequest;
-import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
 
 import java.lang.ref.WeakReference;
@@ -376,9 +374,6 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
 
                     mGoogleApiClient.connect();
                 }
-//
-//                // request a weather update from the app
-//                requestWeatherUpdate();
             } else {
                 Log.d(TAG, "invisible");
 
@@ -426,32 +421,6 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
                             }
                         }
                     });
-        }
-
-        private void requestWeatherUpdate_DataItem() {
-            Log.d(TAG, "requestWeatherUpdate through DataItem API");
-
-            // create and send a request to update the weather on wearable
-            PutDataMapRequest putDataMapRequest = PutDataMapRequest.create(REQ_WEATHER_PATH);
-            putDataMapRequest.setUrgent();
-
-            // put in dummy data just to make sure the request is not discarded for whatever reason
-            // see http://stackoverflow.com/questions/25141046/wearablelistenerservice-ondatachanged-is-not-called
-            putDataMapRequest.getDataMap().putLong("time", System.currentTimeMillis());
-
-            PutDataRequest request = putDataMapRequest.asPutDataRequest();
-            Wearable.DataApi.putDataItem(mGoogleApiClient, request)
-                    .setResultCallback(new ResultCallback<DataApi.DataItemResult>() {
-                                           @Override
-                                           public void onResult(DataApi.DataItemResult dataItemResult) {
-                                               if (dataItemResult.getStatus().isSuccess()) {
-                                                   Log.d(TAG, "Successfully sent");
-                                               } else {
-                                                   Log.d(TAG, "Failed to send");
-                                               }
-                                           }
-                                       }
-                    );
         }
 
         private void registerReceiver() {
@@ -507,8 +476,6 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
 
         @Override
         public void onDraw(Canvas canvas, Rect bounds) {
-//            Log.d(TAG, "onDraw()");
-
             // Draw the background.
             Paint backgroundPaint = mAmbient ? mBackgroundAmbientPaint : mBackgroundPaint;
             canvas.drawRect(0, 0, bounds.width(), bounds.height(), backgroundPaint);

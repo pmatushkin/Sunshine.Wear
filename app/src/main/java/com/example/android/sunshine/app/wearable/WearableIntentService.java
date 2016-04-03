@@ -143,8 +143,11 @@ public class WearableIntentService extends IntentService
         Log.d(TAG, "mMaxTemp: " + Double.toString(mMaxTemp));
         Log.d(TAG, "mMinTemp: " + Double.toString(mMinTemp));
 
-        // put in dummy data just to make sure the request is not discarded for whatever reason
-        // see http://stackoverflow.com/questions/25141046/wearablelistenerservice-ondatachanged-is-not-called
+        // http://stackoverflow.com/questions/25141046/wearablelistenerservice-ondatachanged-is-not-called
+        // this timestamp is added to make the weather condition updates unique.
+        // apparently the non-unique requests are not synchronized through the wearable API.
+        // the non-unique requests may appear when the watch face is being selected by the user,
+        // and requests the weather data from the device.
         putDataMapRequest.getDataMap().putLong("time", System.currentTimeMillis());
 
         PutDataRequest request = putDataMapRequest.asPutDataRequest();
@@ -157,8 +160,6 @@ public class WearableIntentService extends IntentService
                                            } else {
                                                Log.d(TAG, "Failed to send");
                                            }
-
-//                                           mGoogleApiClient.disconnect();
                                        }
                                    }
                 );

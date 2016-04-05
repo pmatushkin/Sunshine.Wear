@@ -666,6 +666,8 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
                     }
                 }
             }
+
+            dataEventBuffer.release();
         }
 
         @Override

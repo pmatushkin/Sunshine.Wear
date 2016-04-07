@@ -180,6 +180,9 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
         Paint mDateAmbientPaint;
         Paint mMaxTempPaint;
         Paint mMinTempPaint;
+        // text paints for when the temperature value is longer than 2 characters
+        Paint mMaxTempSmallPaint;
+        Paint mMinTempSmallPaint;
         // horizontal divider paint object
         Paint mDividerPaint;
 
@@ -263,6 +266,8 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
             // initialize temperature paints
             mMaxTempPaint = createTextPaint(ContextCompat.getColor(getBaseContext(), R.color.text), resources.getDimension(R.dimen.text_size_temperature), NORMAL_TYPEFACE);
             mMinTempPaint = createTextPaint(ContextCompat.getColor(getBaseContext(), R.color.text_semitransparent), resources.getDimension(R.dimen.text_size_temperature), NORMAL_TYPEFACE);
+            mMaxTempSmallPaint = createTextPaint(ContextCompat.getColor(getBaseContext(), R.color.text), resources.getDimension(R.dimen.text_size_temperature_small), NORMAL_TYPEFACE);
+            mMinTempSmallPaint = createTextPaint(ContextCompat.getColor(getBaseContext(), R.color.text_semitransparent), resources.getDimension(R.dimen.text_size_temperature_small), NORMAL_TYPEFACE);
 
             // initialize format strings
             mTemperatureFormat = resources.getString(R.string.format_temperature);
@@ -564,9 +569,23 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
                     bounds.height() / 2 + mLeading,
                     null);
 
-            // draw a high temperature
+            Paint highTempPaint;
+            Paint lowTempPaint;
+
+            // format temperature values
             String highTempText = String.format(mTemperatureFormat, mMaxTemperature);
-            Paint highTempPaint = mMaxTempPaint;
+            String lowTempText = String.format(mTemperatureFormat, mMinTemperature);
+
+            // decide which temperature paint to use, regular or small
+            if ((highTempText.length() > 3) || (lowTempText.length() > 3)) {
+                highTempPaint = mMaxTempSmallPaint;
+                lowTempPaint = mMinTempSmallPaint;
+            } else {
+                highTempPaint = mMaxTempPaint;
+                lowTempPaint = mMinTempPaint;
+            }
+
+            // draw a high temperature
             Rect highTempBounds = new Rect();
             highTempPaint.getTextBounds(highTempText, 0, highTempText.length(), highTempBounds);
             drawHvAlignedText(
@@ -581,8 +600,6 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
                     TextVertAlign.Top);
 
             // draw a low temperature
-            String lowTempText = String.format(mTemperatureFormat, mMinTemperature);
-            Paint lowTempPaint = mMinTempPaint;
             Rect lowTempBounds = new Rect();
             lowTempPaint.getTextBounds(lowTempText, 0, lowTempText.length(), lowTempBounds);
             drawHvAlignedText(

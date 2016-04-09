@@ -14,22 +14,20 @@ The app synchronizes weather information from OpenWeatherMap on Android Phones a
 * BumpTech Glide 3.5.2
 
 
-Getting Started
----------------
+## Getting Started
 This sample uses the Gradle build system.  To build this project, use the
 "gradlew build" command or use "Import Project" in Android Studio.
 
-Support
--------
+### OpenWeatherMap API
+Please register on [OpenWeatherMap](https://home.openweathermap.org/) to obtain your API key. This key needs to be added to `app/build.gradle` file as a third parameter of `buildConfigField` clause:
+```
+buildTypes.each {
+  it.buildConfigField 'String', 'OPEN_WEATHER_MAP_API_KEY', '"OPEN_WEATHER_MAP_API_KEY"'
+}
+```
+Please make sure the API key is enclosed in double quotes, and then enclosed again -- using single quotes.
 
-- Google+ Community: https://plus.google.com/communities/105153134372062985968
-- Stack Overflow: http://stackoverflow.com/questions/tagged/android
-
-Patches are encouraged, and may be submitted by forking this project and
-submitting a pull request through GitHub. Please see CONTRIBUTING.md for more details.
-
-License
--------
+## License
 Copyright 2015 The Android Open Source Project, Inc.
 
 Licensed to the Apache Software Foundation (ASF) under one or more contributor

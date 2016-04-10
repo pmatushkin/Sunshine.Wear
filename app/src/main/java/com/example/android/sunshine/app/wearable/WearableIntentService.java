@@ -40,11 +40,13 @@ public class WearableIntentService extends IntentService
     private static final String KEY_WEATHER_ID = "com.example.key.weather_id";
     private static final String KEY_TEMP_MAX = "com.example.key.max_temp";
     private static final String KEY_TEMP_MIN = "com.example.key.min_temp";
+    private static final String KEY_LOCATION = "com.example.key.location";
 
     private int mWeatherId;
 //    private int mWeatherArtResourceId;
     private double mMaxTemp;
     private double mMinTemp;
+    private String mLocation;
 
     public WearableIntentService() {
         super("WearableIntentService");
@@ -105,8 +107,10 @@ public class WearableIntentService extends IntentService
         mWeatherId = data.getInt(INDEX_WEATHER_ID);
         mMaxTemp = data.getDouble(INDEX_MAX_TEMP);
         mMinTemp = data.getDouble(INDEX_MIN_TEMP);
+        mLocation = Utility.getPreferredLocation(this).trim().toUpperCase();
         data.close();
 
+        Log.d(TAG, "mLocation: " + mLocation);
         Log.d(TAG, "mWeatherId: " + Integer.toString(mWeatherId));
         Log.d(TAG, "mMaxTemp: " + Double.toString(mMaxTemp));
         Log.d(TAG, "mMinTemp: " + Double.toString(mMinTemp));
@@ -138,7 +142,9 @@ public class WearableIntentService extends IntentService
         putDataMapRequest.getDataMap().putInt(KEY_WEATHER_ID, mWeatherId);
         putDataMapRequest.getDataMap().putDouble(KEY_TEMP_MAX, mMaxTemp);
         putDataMapRequest.getDataMap().putDouble(KEY_TEMP_MIN, mMinTemp);
+        putDataMapRequest.getDataMap().putString(KEY_LOCATION, mLocation);
 
+        Log.d(TAG, "mLocation: " + mLocation);
         Log.d(TAG, "mWeatherId: " + Integer.toString(mWeatherId));
         Log.d(TAG, "mMaxTemp: " + Double.toString(mMaxTemp));
         Log.d(TAG, "mMinTemp: " + Double.toString(mMinTemp));

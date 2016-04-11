@@ -26,6 +26,10 @@ buildTypes.each {
 }
 ```
 Please make sure the API key is enclosed in double quotes, and then enclosed again -- using single quotes.
+## Watch face screenshots
+| Active mode | Ambient mode | Actual watch |
+| ------------- | ------------- | ------------- |
+| ![Active mode](https://i.imgur.com/fKX2TCG.png "Active mode")  | ![Ambient mode](https://i.imgur.com/nGzofZc.png "Ambient mode") | ![Actual watch](https://i.imgur.com/SCAjSUr.png "Actual watch") |
 
 ## License
 Copyright 2015 The Android Open Source Project, Inc.

@@ -4,4 +4,5 @@
     <dimen name="text_size_date">15dp</dimen>
     <dimen name="text_size_temperature">30dp</dimen>
     <dimen name="text_size_temperature_small">23dp</dimen>
+    <dimen name="text_size_location">10dp</dimen>
 </resources>

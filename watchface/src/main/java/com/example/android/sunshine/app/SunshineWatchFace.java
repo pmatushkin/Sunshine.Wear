@@ -153,6 +153,7 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
         private static final String KEY_WEATHER_ID = "com.example.key.weather_id";
         private static final String KEY_TEMP_MAX = "com.example.key.max_temp";
         private static final String KEY_TEMP_MIN = "com.example.key.min_temp";
+        private static final String KEY_LOCATION = "com.example.key.location";
 
         final Handler mUpdateTimeHandler = new EngineHandler(this);
 
@@ -180,6 +181,8 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
         Paint mDateAmbientPaint;
         Paint mMaxTempPaint;
         Paint mMinTempPaint;
+        Paint mLocationPaint;
+        Paint mLocationAmbientPaint;
         // text paints for when the temperature value is longer than 2 characters
         Paint mMaxTempSmallPaint;
         Paint mMinTempSmallPaint;
@@ -189,6 +192,7 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
         int mWeatherId = 0;
         double mMaxTemperature = 0;
         double mMinTemperature = 0;
+        String mLocation = "";
 
         // bitmaps
         Bitmap mBitmapStatus;
@@ -268,6 +272,10 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
             mMinTempPaint = createTextPaint(ContextCompat.getColor(getBaseContext(), R.color.text_semitransparent), resources.getDimension(R.dimen.text_size_temperature), NORMAL_TYPEFACE);
             mMaxTempSmallPaint = createTextPaint(ContextCompat.getColor(getBaseContext(), R.color.text), resources.getDimension(R.dimen.text_size_temperature_small), NORMAL_TYPEFACE);
             mMinTempSmallPaint = createTextPaint(ContextCompat.getColor(getBaseContext(), R.color.text_semitransparent), resources.getDimension(R.dimen.text_size_temperature_small), NORMAL_TYPEFACE);
+
+            // initialize location paint
+            mLocationPaint = createTextPaint(ContextCompat.getColor(getBaseContext(), R.color.text), resources.getDimension(R.dimen.text_size_location), NORMAL_TYPEFACE);
+            mLocationAmbientPaint = createTextPaint(ContextCompat.getColor(getBaseContext(), R.color.text_semitransparent), resources.getDimension(R.dimen.text_size_location), NORMAL_TYPEFACE);
 
             // initialize format strings
             mTemperatureFormat = resources.getString(R.string.format_temperature);
@@ -470,6 +478,8 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
                     mDateAmbientPaint.setAntiAlias(!inAmbientMode);
                     mMaxTempPaint.setAntiAlias(!inAmbientMode);
                     mMinTempPaint.setAntiAlias(!inAmbientMode);
+                    mLocationPaint.setAntiAlias(!inAmbientMode);
+                    mLocationAmbientPaint.setAntiAlias(!inAmbientMode);
                 }
                 invalidate();
             }
@@ -612,6 +622,21 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
                     lowTempPaint,
                     Paint.Align.LEFT,
                     TextVertAlign.Top);
+
+            // draw location
+            String locationText = mLocation.trim().toUpperCase();
+            Paint locationPaint = mAmbient ? mLocationAmbientPaint : mLocationPaint;
+            Rect locationBounds = new Rect();
+            locationPaint.getTextBounds(locationText, 0, locationText.length(), locationBounds);
+            drawHvAlignedText(
+                    canvas,
+                    (bounds.width() - locationBounds.width()) / 2,
+                    bounds.height() / 2 + mLeading * 2 + icon.getHeight(),
+                    locationText,
+                    locationPaint,
+                    Paint.Align.LEFT,
+                    TextVertAlign.Top);
+
         }
 
         /**
@@ -678,6 +703,7 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
                         mWeatherId = dataMap.getInt(KEY_WEATHER_ID);
                         mMaxTemperature = dataMap.getDouble(KEY_TEMP_MAX);
                         mMinTemperature = dataMap.getDouble(KEY_TEMP_MIN);
+                        mLocation = dataMap.getString(KEY_LOCATION);
 
                         invalidate();
                     }

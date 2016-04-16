@@ -3,7 +3,8 @@ The app synchronizes weather information from OpenWeatherMap on Android Phones a
 
 ## Pre-requisites
 * Android SDK 21 or Higher
-* Build Tools version 21.1.2
+* Android Studio 1.5 or Higher
+* Build Tools version 21.1.2 or Higher
 * Android Support AppCompat 22.2.0+
 * Android Support Annotations 22.2.0+
 * Android Support GridLayout 22.2.0+

@@ -14,10 +14,8 @@ The app synchronizes weather information from OpenWeatherMap on Android Phones a
 * Google Play Services GCM 7.0.0+
 * BumpTech Glide 3.5.2
 
-
 ## Getting Started
-This sample uses the Gradle build system.  To build this project, use the
-"gradlew build" command or use "Import Project" in Android Studio.
+To build this project, use the "gradlew build" command or use "Import Project" in Android Studio.
 
 ### OpenWeatherMap API
 Please register on [OpenWeatherMap](https://home.openweathermap.org/) to obtain your API key. This key needs to be added to `app/build.gradle` file as a third parameter of `buildConfigField` clause:
@@ -27,6 +25,7 @@ buildTypes.each {
 }
 ```
 Please make sure the API key is enclosed in double quotes, and then enclosed again -- using single quotes.
+
 ## Watch face screenshots
 | Active mode | Ambient mode | Actual watch |
 | ------------- | ------------- | ------------- |
@@ -49,4 +48,3 @@ distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
 License for the specific language governing permissions and limitations under
 the License.
-
